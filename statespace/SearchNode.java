@@ -1,3 +1,5 @@
+// package statespace;
+
 public class SearchNode<State> {
     // member variables
     private State state;
@@ -8,7 +10,16 @@ public class SearchNode<State> {
         this.state = state;
     }
 
-    public setTransformation(String transformation){
+    public String toString() {
+        return "Transformation : " + this.transformation + ";" + this.state.toString();
+    }
+    // can you hear me??
+
+    public State getState() {
+        return this.state;
+    }
+
+    public void setTransformation(String transformation) {
         this.transformation = transformation;
     }
     // transformation functions applicable on each searchnode

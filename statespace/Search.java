@@ -1,4 +1,8 @@
 
+// package statespace;
+
+import java.util.*;
+
 public class Search<State> {
     // constructor
     public Search(State startState, Goal<State> goal, SearchController<State> controller,
@@ -15,25 +19,31 @@ public class Search<State> {
     private Successors<State> successors;
     private State startState;
 
-    private List<State> generated;
-    private List<State> expanded;
-
     // methods
     public SearchPath<State> findSolution() {
-        // todo
-        SearchPath<State> searchPath;
+        SearchPath<State> searchPath = new SearchPath<State>();
         State currentState = startState;
-        controller.insert(startState);
-        searchPath.append(startState);
+        assert currentState != null : "Current State is null";
+        SearchNode<State> searchNode = this.successors.convertStateToSearchNode("start", startState);
+        assert searchNode != null : "searchNode is null";
+        controller.insert(searchNode);
+        searchPath.append(searchNode);
+        System.out.println();
         while (!controller.isEmpty()) {
             if (goal.satisfied(currentState)) {
-                searchPath.append(currentState);
+                searchPath.append(searchNode);
                 return searchPath;
             }
             List<SearchNode<State>> generatedSuccessors = successors.expand(currentState);
+            for (SearchNode<State> searchnode : generatedSuccessors) {
+                System.out.println("the generated searchnode is" + searchnode);
+            }
             controller.insertBatch(generatedSuccessors);
-            currentState = controller.remove();
-            searchPath.append(currentState);
+            System.out.println("finished inserting batch");
+            searchNode = controller.remove();
+            System.out.println("the removed searchNode is " + searchNode);
+            searchPath.append(searchNode);
+            currentState = searchNode.getState();
         }
         return null;
 

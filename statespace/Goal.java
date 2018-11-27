@@ -1,16 +1,18 @@
+// package statespace;
+
 public abstract class Goal<State> {
     public abstract Boolean satisfied(State state);
 }
 
 // concrete domain specific goal
-class JugGoal<JugState> {
-    private JugState target;
+class JugGoal<State> extends Goal<State> {
+    private State target;
 
-    public JugGoal(JugState target) {
+    public JugGoal(State target) {
         this.target = target;
     }
 
-    public Boolean satisfied(JugState state) {
+    public Boolean satisfied(State state) {
         return state.equals(target);
     }
 }

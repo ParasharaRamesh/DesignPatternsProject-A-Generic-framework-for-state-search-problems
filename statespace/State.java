@@ -1,9 +1,10 @@
+// package statespace;
 
 //domain dependent
-class JugState {
+class JugState implements Cloneable {
     // capacities of each jug
-    private static Integer capacityJug1 = 5;
-    private static Integer capacityJug2 = 7;
+    public static Integer capacityJug1 = 5;
+    public static Integer capacityJug2 = 7;
 
     // // static init block
     // static {
@@ -20,9 +21,25 @@ class JugState {
         this.jug2 = jug2;
     }
 
+    public Integer getJug1() {
+        return this.jug1;
+    }
+
+    public Integer getJug2() {
+        return this.jug2;
+    }
+
+    public void setJug1(Integer jug1) {
+        this.jug1 = jug1;
+    }
+
+    public void setJug2(Integer jug2) {
+        this.jug2 = jug2;
+    }
+
     @Override
     public String toString() {
-        String result = " Jug1 : " + jug1 + "Jug2 :" + jug2;
+        String result = " Jug1 : " + jug1 + ";Jug2 : " + jug2;
         return result;
     }
 
@@ -53,4 +70,8 @@ class JugState {
         return other.jug1 == this.jug1 && other.jug2 == this.jug2;
     }
 
+    @Override
+    public JugState clone() throws CloneNotSupportedException {
+        return (JugState) super.clone();
+    }
 }
