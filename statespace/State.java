@@ -3,14 +3,8 @@
 //domain dependent
 class JugState implements Cloneable {
     // capacities of each jug
-    public static Integer capacityJug1 = 5;
-    public static Integer capacityJug2 = 7;
-
-    // // static init block
-    // static {
-    // capacityJug1 = 5;
-    // capacityJug2 = 7;
-    // }
+    public static Integer capacityJug1 = 3;
+    public static Integer capacityJug2 = 5;
 
     // member variables
     private Integer jug1;
@@ -54,7 +48,7 @@ class JugState implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        System.out.println("\tinside equals");
+        // System.out.println("\tinside equals");
         if (o == this) {
             return true;
         }
@@ -65,13 +59,15 @@ class JugState implements Cloneable {
 
         JugState other = (JugState) o;
 
-        System.out.println("\tinside this" + this);
-        System.out.println("\tinside other" + other);
+        // System.out.println("\tinside this" + this);
+        // System.out.println("\tinside other" + other);
         return other.jug1 == this.jug1 && other.jug2 == this.jug2;
     }
 
     @Override
-    public JugState clone() throws CloneNotSupportedException {
-        return (JugState) super.clone();
+    public JugState clone() {
+        // System.out.println("inside clone");
+        return new JugState(this.jug1, this.jug2);
     }
+    // throws CloneNotSupportedException
 }

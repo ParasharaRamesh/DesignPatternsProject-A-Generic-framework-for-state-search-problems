@@ -13,7 +13,7 @@ public abstract class ControlDecorator<State> extends SearchController<State> {
 
 class BFSGraphController<State> extends ControlDecorator<State> {
     private SearchController<State> controller;
-    private HashSet<SearchNode<State>> set;
+    private HashSet<SearchNode<State>> set = new HashSet<SearchNode<State>>();
 
     public BFSGraphController(SearchController<State> controller) {
         this.controller = controller;
@@ -42,7 +42,7 @@ class BFSGraphController<State> extends ControlDecorator<State> {
 class DFSGraphController<State> extends ControlDecorator<State> {
     private SearchController<State> controller;
 
-    private HashSet<SearchNode<State>> set;
+    private HashSet<SearchNode<State>> set = new HashSet<SearchNode<State>>();
 
     public DFSGraphController(SearchController<State> controller) {
         this.controller = controller;
@@ -61,9 +61,8 @@ class DFSGraphController<State> extends ControlDecorator<State> {
         }
     }
 
-
-    @Override 
-    public Boolean isEmpty(){
+    @Override
+    public Boolean isEmpty() {
         return this.controller.isEmpty();
     }
 
