@@ -1,9 +1,0 @@
-abstract class A<T>{
-    T method_1;
-    T method_2;
-}
-
-class B<T extends Q> extends A<T>{
-
-}
-

@@ -1,9 +1,9 @@
 import java.util.*;
 
 public abstract class Successors<State> {
-    public abstract List<SearchNode<State>> expand(State state);
+    public abstract List<SearchNode<State>> expand(SearchNode<State> searchNode);
 
-    public abstract SearchNode<State> convertStateToSearchNode(String operation, State newState);
+    public abstract SearchNode<State> convertStateToSearchNode(String operation, State newState, State prevState);
 
 }
 
@@ -109,17 +109,17 @@ class JugSuccessor<State extends JugState> extends Successors<State> {
     // helper function
 
     @Override
-    public SearchNode<State> convertStateToSearchNode(String operation, State newState) {
+    public SearchNode<State> convertStateToSearchNode(String operation, State newState, State prevState) {
         SearchNode<State> snode = new SearchNode<State>(newState);
+        snode.setPrevState(prevState);
         snode.setTransformation(operation);
         return snode;
     }
 
     @Override
-    public List<SearchNode<State>> expand(State inpState) {
-        // System.out.println("capacity1:" + this.capacity1);
-        // System.out.println("capacity2:" + this.capacity2);
-        // return null;
+    public List<SearchNode<State>> expand(SearchNode<State> searchNode) {
+        State inpState = searchNode.getState();
+
         List<SearchNode<State>> states = new ArrayList<SearchNode<State>>();
         State s1 = this.fillJug1(inpState);
         State s2 = this.fillJug2(inpState);
@@ -127,32 +127,36 @@ class JugSuccessor<State extends JugState> extends Successors<State> {
         State s4 = this.emptyJug2(inpState);
         State s5 = this.transferJug1ToJug2(inpState);
         State s6 = this.transferJug2ToJug1(inpState);
+        SearchNode<State> currnode = null;
         if (s1 != null) {
-            // System.out.println("\t\tdone fillJug1");
-            // System.out.println("\t\t\tfillJug1 is" + s1);
-            states.add(this.convertStateToSearchNode("fillJug1", s1));
+            currnode = this.convertStateToSearchNode("fillJug1", s1, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         if (s2 != null) {
-            // System.out.println("\t\tdone fillJug2");
-            states.add(this.convertStateToSearchNode("fillJug2", s2));
+            currnode = this.convertStateToSearchNode("fillJug2", s2, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         if (s3 != null) {
-            // System.out.println("\t\tdone emptyJug1");
-            // System.out.println("\t\t\temptyJug1 is" + s3);
-            states.add(this.convertStateToSearchNode("emptyJug1", s3));
+            currnode = this.convertStateToSearchNode("emptyJug1", s3, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         if (s4 != null) {
-            // System.out.println("\t\tdone emptyJug2");
-            // System.out.println("\t\t\temptyJug2 is" + s4);
-            states.add(this.convertStateToSearchNode("emptyJug2", s4));
+            currnode = this.convertStateToSearchNode("emptyJug2", s4, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         if (s5 != null) {
-            // System.out.println("\t\tdone transferJug1ToJug2");
-            states.add(this.convertStateToSearchNode("transferJug1ToJug2", s5));
+            currnode = this.convertStateToSearchNode("transferJug1ToJug2", s5, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         if (s6 != null) {
-            // System.out.println("\t\tdone transferJug2ToJug1");
-            states.add(this.convertStateToSearchNode("transferJug2ToJug1", s6));
+            currnode = this.convertStateToSearchNode("transferJug2ToJug1", s6, inpState);
+            currnode.setPrevSearchNode(searchNode);
+            states.add(currnode);
         }
         return states;
     }

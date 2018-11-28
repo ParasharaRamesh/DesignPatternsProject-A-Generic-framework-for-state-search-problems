@@ -1,6 +1,3 @@
-
-// package statespace;
-
 import java.util.*;
 
 public class Search<State> {
@@ -22,27 +19,23 @@ public class Search<State> {
     // methods
     public SearchPath<State> findSolution() {
         SearchPath<State> searchPath = new SearchPath<State>();
-        // State currentState = startState;
-        // assert currentState != null : "Current State is null";
-        SearchNode<State> searchNode = this.successors.convertStateToSearchNode("start", startState);
+        SearchNode<State> searchNode = this.successors.convertStateToSearchNode("start", startState, null);
         assert searchNode != null : "searchNode is null";
         controller.insert(searchNode);
+
         while (!controller.isEmpty()) {
             searchNode = controller.remove();
-            System.out.println("the removed searchNode is " + searchNode);
+            Util.debug("the removed searchnode is" + searchNode.toString());
             searchPath.append(searchNode);
             State currentState = searchNode.getState();
             if (goal.satisfied(currentState)) {
-                // searchPath.append(searchNode);
                 return searchPath;
             }
-            List<SearchNode<State>> generatedSuccessors = successors.expand(currentState);
+            List<SearchNode<State>> generatedSuccessors = successors.expand(searchNode);
             for (SearchNode<State> node : generatedSuccessors) {
-                System.out.println("the generated searchnode is" + node);
+                Util.debug("the generated searchnode is" + node.toString());
             }
             controller.insertBatch(generatedSuccessors);
-            System.out.println("finished inserting batch");
-
         }
         return null;
 

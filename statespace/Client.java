@@ -5,11 +5,16 @@
 public class Client {
 
     public static void main(String[] args) {
+        Util.DEBUG = false;
+        JugState.capacityJug1 = 3;
+        JugState.capacityJug2 = 5;
         JugState startState = new JugState(0, 0);
         JugState targetState = new JugState(0, 4);
         Goal<JugState> goal = new JugGoal<JugState>(targetState);
-        SearchController<JugState> controller = new DFSController<JugState>();
-        // controller = new BFSGraphController<JugState>(controller);
+        SearchController<JugState> controller = new BFSController<JugState>();
+        controller = new BFSGraphController<JugState>(controller);
+        // SearchController<JugState> controller = new DFSController<JugState>();
+        // controller = new DFSGraphController<JugState>(controller);
         Successors<JugState> successors = new JugSuccessor<JugState>();
         assert startState != null : "Start state is null";
         assert targetState != null : "target State is null";
