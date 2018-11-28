@@ -16,3 +16,15 @@ class JugGoal<State> extends Goal<State> {
         return state.equals(target);
     }
 }
+
+class DistanceGoal<State> extends Goal<State> {
+    private State target;
+
+    public DistanceGoal(State target) {
+        this.target = target;
+    }
+
+    public Boolean satisfied(State state) {
+        return state.equals(target);
+    }
+}

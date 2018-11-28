@@ -2,7 +2,7 @@
 
 // State, SearchNode, Goal, Successors, SearchController, ControlDecorator,SearchPath, Search
 
-public class Client {
+public class JugClient {
 
     public static void main(String[] args) {
         Util.DEBUG = false;

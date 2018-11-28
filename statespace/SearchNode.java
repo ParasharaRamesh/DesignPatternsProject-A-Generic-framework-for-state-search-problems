@@ -38,6 +38,10 @@ public class SearchNode<State> {
         this.prevstate = prevstate;
     }
 
+    public String getTransformation() {
+        return this.transformation;
+    }
+
     public void setTransformation(String transformation) {
         this.transformation = transformation;
     }

@@ -1,5 +1,55 @@
 import java.util.*;
 
+class Pair<A, B> {
+    private A first;
+    private B second;
+
+    public Pair(A first, B second) {
+        super();
+        this.first = first;
+        this.second = second;
+    }
+
+    public int hashCode() {
+        int hashFirst = first != null ? first.hashCode() : 0;
+        int hashSecond = second != null ? second.hashCode() : 0;
+
+        return (hashFirst + hashSecond) * hashSecond + hashFirst;
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof Pair) {
+            Pair otherPair = (Pair) other;
+            return ((this.first == otherPair.first
+                    || (this.first != null && otherPair.first != null && this.first.equals(otherPair.first)))
+                    && (this.second == otherPair.second || (this.second != null && otherPair.second != null
+                            && this.second.equals(otherPair.second))));
+        }
+
+        return false;
+    }
+
+    public String toString() {
+        return "(" + first + ", " + second + ")";
+    }
+
+    public A getFirst() {
+        return first;
+    }
+
+    public void setFirst(A first) {
+        this.first = first;
+    }
+
+    public B getSecond() {
+        return second;
+    }
+
+    public void setSecond(B second) {
+        this.second = second;
+    }
+}
+
 public abstract class Successors<State> {
     public abstract List<SearchNode<State>> expand(SearchNode<State> searchNode);
 
@@ -7,7 +57,6 @@ public abstract class Successors<State> {
 
 }
 
-// inherit from successors
 class JugSuccessor<State extends JugState> extends Successors<State> {
 
     private Integer capacity1 = JugState.capacityJug1;
@@ -160,6 +209,86 @@ class JugSuccessor<State extends JugState> extends Successors<State> {
         }
         return states;
     }
-    // TODO: if we want an extra transformation make it a visitor
 
+}
+
+class DistanceSuccessor<State extends DistanceState> extends Successors<State> {
+    private HashMap<State, ArrayList<Pair<State, Integer>>> distances = null;
+
+    public DistanceSuccessor() {
+        this.distances = new HashMap<State, ArrayList<Pair<State, Integer>>>();
+        this.populateAdjacencyList();
+    }
+
+    public void populateAdjacencyList() {
+        State A = (State) State.createCity("A");
+        State B = (State) State.createCity("B");
+        State C = (State) State.createCity("C");
+        State D = (State) State.createCity("D");
+        State E = (State) State.createCity("E");
+        ArrayList<Pair<State, Integer>> Aneighbours = new ArrayList<Pair<State, Integer>>();
+        ArrayList<Pair<State, Integer>> Bneighbours = new ArrayList<Pair<State, Integer>>();
+        ArrayList<Pair<State, Integer>> Cneighbours = new ArrayList<Pair<State, Integer>>();
+        ArrayList<Pair<State, Integer>> Dneighbours = new ArrayList<Pair<State, Integer>>();
+        ArrayList<Pair<State, Integer>> Eneighbours = new ArrayList<Pair<State, Integer>>();
+
+        Aneighbours.add(new Pair<State, Integer>(B, 1));
+        Aneighbours.add(new Pair<State, Integer>(C, 2));
+
+        Bneighbours.add(new Pair<State, Integer>(A, 1));
+        Bneighbours.add(new Pair<State, Integer>(C, 3));
+        Bneighbours.add(new Pair<State, Integer>(D, 4));
+        Bneighbours.add(new Pair<State, Integer>(E, 1));
+
+        Cneighbours.add(new Pair<State, Integer>(A, 2));
+        Cneighbours.add(new Pair<State, Integer>(B, 3));
+        Cneighbours.add(new Pair<State, Integer>(D, 5));
+        Cneighbours.add(new Pair<State, Integer>(E, 6));
+
+        Dneighbours.add(new Pair<State, Integer>(B, 4));
+        Dneighbours.add(new Pair<State, Integer>(C, 5));
+        Dneighbours.add(new Pair<State, Integer>(E, 1));
+
+        Eneighbours.add(new Pair<State, Integer>(C, 6));
+        Eneighbours.add(new Pair<State, Integer>(B, 1));
+        Eneighbours.add(new Pair<State, Integer>(D, 1));
+
+        this.distances.put(A, Aneighbours);
+        this.distances.put(B, Bneighbours);
+        this.distances.put(C, Cneighbours);
+        this.distances.put(D, Dneighbours);
+        this.distances.put(E, Eneighbours);
+    }
+
+    @Override
+    public List<SearchNode<State>> expand(SearchNode<State> searchNode) {
+        List<SearchNode<State>> states = new ArrayList<SearchNode<State>>();
+        assert searchNode.getState() != null : "searchNode doesnt have a currstate!";
+        assert this.distances.get(searchNode.getState()) != null : "the distances hashmap does'nt have this!";
+        // if (this.distances.get(searchNode.getState())) {
+        // System.out.println("distance hashmap doesn't have this!");
+        // }
+        ArrayList<Pair<State, Integer>> neighbours = this.distances.get(searchNode.getState());
+        assert neighbours != null : "neighbours are null!";
+        // if (neighbours == null) {
+        // System.out.println("The neighbours are null");
+        // }
+        for (Pair<State, Integer> neighbour : neighbours) {
+            // System.out.println("inside neighbors loop!");
+            State newState = neighbour.getFirst();
+            Integer cost = neighbour.getSecond();
+            SearchNode<State> snode = this.convertStateToSearchNode(cost.toString(), newState, searchNode.getState());
+            snode.setPrevSearchNode(searchNode);
+            states.add(snode);
+        }
+        return states;
+    }
+
+    @Override
+    public SearchNode<State> convertStateToSearchNode(String operation, State newState, State prevState) {
+        SearchNode<State> snode = new SearchNode<State>(newState);
+        snode.setPrevState(prevState);
+        snode.setTransformation(operation);
+        return snode;
+    }
 }
