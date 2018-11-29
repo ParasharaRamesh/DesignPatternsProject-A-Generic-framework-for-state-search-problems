@@ -1,3 +1,5 @@
+package StateSpaceSearch;
+
 public class Util {
     public static Boolean DEBUG = true;
 
