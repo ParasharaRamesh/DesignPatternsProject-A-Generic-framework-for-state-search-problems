@@ -1,4 +1,7 @@
-import java.util.*;
+package StateSpaceSearch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchPath<State> {
     private List<SearchNode<State>> storedPath;
@@ -9,12 +12,12 @@ public class SearchPath<State> {
         this.actualPath = new ArrayList<SearchNode<State>>();
     }
 
-    public void append(SearchNode<State> searchnode) {
-        this.storedPath.add(searchnode);
+    public void append(SearchNode<State> searchNode) {
+        this.storedPath.add(searchNode);
     }
 
     public void showPath() {
-        System.out.println("The SearchPath is ..");
+        System.out.println("The SearchPath is:");
         SearchNode<State> currLastNode = this.storedPath.get(this.storedPath.size() - 1);
 
         while (currLastNode != null) {
@@ -26,5 +29,5 @@ public class SearchPath<State> {
             System.out.println(currnode);
         }
     }
-    // TODO: add some maniplation of list methods
+
 }

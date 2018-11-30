@@ -1,14 +1,14 @@
-// package statespace;
+package StateSpaceSearch;
+
+import java.util.Objects;
 
 public class SearchNode<State> {
-    // member variables
+
     private State state;
     private State prevstate;
     private String transformation;
-
     private SearchNode<State> prevSearchNode;
 
-    // constructor
     public SearchNode(State state) {
         this.state = state;
     }
@@ -21,6 +21,7 @@ public class SearchNode<State> {
         this.prevSearchNode = prevSearchNode;
     }
 
+    @Override
     public String toString() {
         return "{ Prevstate: (" + prevstate + ") ; Transformation : (" + this.transformation + ")" + " ; CurrState : ("
                 + this.state.toString() + ")}";
@@ -45,7 +46,41 @@ public class SearchNode<State> {
     public void setTransformation(String transformation) {
         this.transformation = transformation;
     }
-    // transformation functions applicable on each searchnode
 
-    // fill later
+    @Override
+    public boolean  equals (Object object) {
+        boolean result = false;
+        if (object == null || object.getClass() != getClass()) {
+            result = false;
+        }
+        SearchNode<State> other = (SearchNode<State>) object;
+
+        if (!this.state.equals(other.state))
+        {
+            return false;
+        }
+
+        if (!this.transformation.equals(other.transformation))
+        {
+            return false;
+        }
+
+        if (!this.prevstate.equals(other.prevstate))
+        {
+            return false;
+        }
+
+        if (this.prevSearchNode.equals(other.prevSearchNode))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.state);
+    }
+
 }
