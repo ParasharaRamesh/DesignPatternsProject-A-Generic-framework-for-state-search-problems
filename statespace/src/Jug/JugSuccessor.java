@@ -19,12 +19,12 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         if (jug1 < this.capacity1) {
             try {
                 opState = (State) inpState.clone();
+                opState.setJug1(this.capacity1);
             }
             catch (CloneNotSupportedException e)
             {
                 e.printStackTrace();
             }
-            opState.setJug1(this.capacity1);
         }
         return opState;
     }
@@ -36,12 +36,12 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         if (jug2 < this.capacity2) {
             try {
                 opState = (State) inpState.clone();
+                opState.setJug2(this.capacity2);
             }
             catch (CloneNotSupportedException e)
             {
                 e.printStackTrace();
             }
-            opState.setJug2(this.capacity2);
         }
         return opState;
     }
@@ -54,12 +54,12 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
             jug1 = 0;
             try{
                 opState = (State) inpState.clone();
+                opState.setJug1(jug1);
             }
             catch (CloneNotSupportedException e)
             {
                 e.printStackTrace();
             }
-            opState.setJug1(jug1);
         }
         return opState;
     }
@@ -71,12 +71,12 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
             jug2 = 0;
             try {
                 opState = (State) inpState.clone();
+                opState.setJug2(jug2);
             }
             catch (CloneNotSupportedException e)
             {
                 e.printStackTrace();
             }
-            opState.setJug2(jug2);
         }
         return opState;
     }
