@@ -28,8 +28,8 @@ public class DistanceState implements Cloneable {
     }
 
     @Override
-    public DistanceState clone() {
-        return new DistanceState(this.city);
+    public DistanceState clone() throws CloneNotSupportedException {
+        return (DistanceState) super.clone();
     }
 
     @Override
