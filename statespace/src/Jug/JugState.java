@@ -59,7 +59,7 @@ public class JugState implements Cloneable {
     }
 
     @Override
-    public JugState clone() {
-        return new JugState(this.jug1, this.jug2);
+    public JugState clone() throws CloneNotSupportedException {
+        return (JugState) super.clone();
     }
 }

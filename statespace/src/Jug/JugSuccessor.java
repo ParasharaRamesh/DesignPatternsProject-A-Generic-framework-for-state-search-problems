@@ -17,8 +17,14 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         Integer jug2 = inpState.getJug2();
         State opState = null;
         if (jug1 < this.capacity1) {
-            opState = (State) inpState.clone();
-            opState.setJug1(this.capacity1);
+            try {
+                opState = (State) inpState.clone();
+                opState.setJug1(this.capacity1);
+            }
+            catch (CloneNotSupportedException e)
+            {
+                e.printStackTrace();
+            }
         }
         return opState;
     }
@@ -28,8 +34,14 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         Integer jug1 = inpState.getJug1();
         State opState = null;
         if (jug2 < this.capacity2) {
-            opState = (State) inpState.clone();
-            opState.setJug2(this.capacity2);
+            try {
+                opState = (State) inpState.clone();
+                opState.setJug2(this.capacity2);
+            }
+            catch (CloneNotSupportedException e)
+            {
+                e.printStackTrace();
+            }
         }
         return opState;
     }
@@ -40,8 +52,14 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         State opState = null;
         if (jug1 > 0) {
             jug1 = 0;
-            opState = (State) inpState.clone();
-            opState.setJug1(jug1);
+            try{
+                opState = (State) inpState.clone();
+                opState.setJug1(jug1);
+            }
+            catch (CloneNotSupportedException e)
+            {
+                e.printStackTrace();
+            }
         }
         return opState;
     }
@@ -51,8 +69,14 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
         State opState = null;
         if (jug2 > 0) {
             jug2 = 0;
-            opState = (State) inpState.clone();
-            opState.setJug2(jug2);
+            try {
+                opState = (State) inpState.clone();
+                opState.setJug2(jug2);
+            }
+            catch (CloneNotSupportedException e)
+            {
+                e.printStackTrace();
+            }
         }
         return opState;
     }
@@ -60,41 +84,58 @@ public class JugSuccessor<State extends JugState> extends Successors<State> {
     public State transferJug1ToJug2(State inpState) {
         Integer jug1 = inpState.getJug1();
         Integer jug2 = inpState.getJug2();
-        State opState = (State) inpState.clone();
-        if (jug2.equals(this.capacity2)) {
-            opState = null;
-        } else if (jug1 + jug2 <= this.capacity2) {
-            jug2 += jug1;
-            jug1 = 0;
-            opState.setJug1(jug1);
-            opState.setJug2(jug2);
-        } else {
-            int diff = this.capacity2 - jug2;
-            jug1 -= diff;
-            jug2 = this.capacity2;
-            opState.setJug1(jug1);
-            opState.setJug2(jug2);
+        State opState = null;
+        try {
+            opState = (State) inpState.clone();
+
+            if (jug2.equals(this.capacity2)) {
+                opState = null;
+            } else if (jug1 + jug2 <= this.capacity2) {
+                jug2 += jug1;
+                jug1 = 0;
+                opState.setJug1(jug1);
+                opState.setJug2(jug2);
+            } else {
+                int diff = this.capacity2 - jug2;
+                jug1 -= diff;
+                jug2 = this.capacity2;
+                opState.setJug1(jug1);
+                opState.setJug2(jug2);
+            }
         }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+
         return opState;
     }
 
     public State transferJug2ToJug1(State inpState) {
         Integer jug1 = inpState.getJug1();
         Integer jug2 = inpState.getJug2();
-        State opState = (State) inpState.clone();
-        if (jug1.equals(this.capacity1)) {
-            opState = null;
-        } else if (jug1 + jug2 <= this.capacity1) {
-            jug1 += jug2;
-            jug2 = 0;
-            opState.setJug1(jug1);
-            opState.setJug2(jug2);
-        } else {
-            int diff = this.capacity1 - jug1;
-            jug2 -= diff;
-            jug1 = this.capacity1;
-            opState.setJug1(jug1);
-            opState.setJug2(jug2);
+        State opState = null;
+        try {
+            opState = (State) inpState.clone();
+
+            if (jug1.equals(this.capacity1)) {
+                opState = null;
+            } else if (jug1 + jug2 <= this.capacity1) {
+                jug1 += jug2;
+                jug2 = 0;
+                opState.setJug1(jug1);
+                opState.setJug2(jug2);
+            } else {
+                int diff = this.capacity1 - jug1;
+                jug2 -= diff;
+                jug1 = this.capacity1;
+                opState.setJug1(jug1);
+                opState.setJug2(jug2);
+            }
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
         }
         return opState;
     }
